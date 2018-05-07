@@ -3,13 +3,18 @@
 
 const axios = require('axios');
 
-var fixer_access_key = '1cac09141b3ffb237f3e3c3a5087f25b';
 const getExchangeRate = (from, to) => {
-    axios.get(`http://data.fixer.io/api/latest?access_key=${fixer_access_key}&symbols=${from},${to}`).then((response) => {
+    return axios.get(`http://api.fixer.io/latest?base=${from}`).then((response) => {
         return response.data.rates[to];
     });
 };
 
-getExchangeRate('USD', 'KHR').then((rate) => {
-    console.log(rate);
+const getCountries = (currencyCode) => {
+    return  axios.get(`https://restcountries.eu/rest/v2/currency/${currencyCode}`).then((response) => {
+        return response.data.map((country) => country.name);
+    });
+}
+
+getCountries('CAD').then((country) => {
+    console.log(country);
 });
